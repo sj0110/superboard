@@ -25,6 +25,7 @@ export function Hero({ sidebarMinimized = false }: HeroProps) {
           src="/assets/hero-image.png"
           alt="Campaign illustration"
           fill
+          sizes="(max-width: 1024px) 90vw, 40vw"
           className="object-cover rounded-[14px] pointer-events-none"
           priority
         />

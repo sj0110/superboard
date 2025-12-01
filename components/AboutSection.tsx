@@ -42,6 +42,7 @@ export function AboutSection() {
                       src="/assets/curator-avatar.png"
                       alt={mockCampaignData.curator.name}
                       fill
+                      sizes="100px"
                       className="object-cover rounded-full"
                     />
                   </div>

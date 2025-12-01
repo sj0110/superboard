@@ -70,7 +70,7 @@ export function Sidebar({ isOpen = true, onClose, isMinimized: externalIsMinimiz
               src="/assets/logo.svg"
               alt="Superboard"
               width={48}
-              height={30}
+              height={31}
               className="object-contain"
               priority
             />
