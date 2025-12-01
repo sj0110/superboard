@@ -6,13 +6,13 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { AlertCircle, Play } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import Image from 'next/image'
 import { mockCampaignData } from '@/lib/mockData'
 
 export function AboutSection() {
   return (
-    <section className="backdrop-blur-[60px] flex flex-col gap-5 items-center justify-center overflow-clip px-4 lg:px-8 py-16 w-full">
+    <section className="backdrop-blur-[60px] flex flex-col gap-5 items-center justify-center overflow-clip px-4 lg:px-10 py-16 w-full">
       <Card className="bg-neutral-50 border border-neutral-100 flex flex-col gap-7 items-start pb-10 pt-2.5 px-4 lg:px-8 rounded-tl-4xl rounded-tr-4xl w-full">
         {/* Header */}
         <div className="border-b border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-0 py-5 w-full">
@@ -100,9 +100,16 @@ export function AboutSection() {
               <Button
                 variant="outline"
                 size="default"
-                className="rounded-full border-blue-200 hover:bg-blue-50 hover:border-blue-300"
+                className="rounded-full border-blue-200 hover:bg-blue-50 hover:border-blue-300 flex items-center gap-[6px]"
               >
-                <Play className="w-5 h-5 mr-1.5 text-blue-500" />
+                <div className="relative shrink-0 w-5 h-5">
+                  <Image
+                    src="/assets/icon-play.svg"
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
+                </div>
                 <span className="text-sm font-medium text-blue-500">Play Video</span>
               </Button>
             </Card>

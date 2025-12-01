@@ -50,14 +50,14 @@ export default function Home() {
               <Hero />
             </div>
 
-            {/* Stats and Leaderboard */}
-            <div className="box-border flex flex-col gap-[28px] items-start px-4 lg:px-0 py-7 w-full">
+            {/* Stats and Leaderboard - matching AboutSection padding */}
+            <div className="box-border flex flex-col gap-[28px] items-start px-4 lg:px-10 py-7 w-full">
               <StatsCards />
               <LeaderboardSection />
             </div>
 
             {/* About Section */}
-            <div className="w-full px-4 lg:px-0">
+            <div className="w-full">
               <AboutSection />
             </div>
           </main>

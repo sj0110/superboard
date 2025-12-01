@@ -6,8 +6,8 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ArrowRightIcon } from '@/components/icons'
-import { Lock, FileText } from 'lucide-react'
+import { Lock } from 'lucide-react'
+import Image from 'next/image'
 import { mockCampaignData } from '@/lib/mockData'
 import { useEffect, useState } from 'react'
 
@@ -70,9 +70,20 @@ export function LeaderboardSection() {
             </div>
           </div>
 
-          <Button variant="outline" size="default" className="rounded-full bg-neutral-100 hover:bg-neutral-200 hover:border-neutral-300">
+          <Button variant="outline" size="default" className="rounded-full bg-neutral-100 hover:bg-neutral-200 hover:border-neutral-300 flex items-center gap-[3.307px]">
             <span className="text-sm font-medium text-neutral-900">Read Campaign Rules</span>
-            <ArrowRightIcon className="w-[18px] h-[18px] rotate-180 scale-y-[-100%]" />
+            <div className="flex items-center justify-center relative shrink-0">
+              <div className="flex-none rotate-180 scale-y-[-100%]">
+                <div className="relative w-[18px] h-[18px]">
+                  <Image
+                    src="/assets/icon-rules-arrow.svg"
+                    alt=""
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
           </Button>
 
           <div className="hidden md:flex h-full items-center justify-center w-0">
