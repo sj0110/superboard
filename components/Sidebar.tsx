@@ -63,14 +63,14 @@ export function Sidebar({ isOpen = true, onClose, isMinimized: externalIsMinimiz
       <div className="flex flex-col gap-12 items-end w-full">
         <div className={`flex items-center ${isMinimized ? 'justify-center' : 'justify-between'} w-full ${isMinimized ? '' : 'min-w-[184px]'} px-0 py-0.5 rounded-xl relative group`}>
           {/* Logo - always visible, but hidden when expand button is hovered */}
-          <div className={`flex items-center justify-center transition-opacity duration-200 opacity-100 ${
-            isMinimized ? 'w-6 h-6 group-hover:opacity-0' : 'w-12 h-[30px]'
+          <div className={`flex items-center justify-center transition-opacity duration-200 opacity-100 w-12 h-[30px] ${
+            isMinimized ? 'group-hover:opacity-0' : ''
           }`}>
             <Image
               src="/assets/logo.svg"
               alt="Superboard"
-              width={isMinimized ? 24 : 48}
-              height={isMinimized ? 24 : 30}
+              width={48}
+              height={30}
               className="object-contain"
               priority
             />
@@ -206,9 +206,7 @@ export function Sidebar({ isOpen = true, onClose, isMinimized: externalIsMinimiz
           aria-expanded={isProfileExpanded}
           title={isMinimized ? 'Profile' : undefined}
         >
-          <div className={`rounded-full bg-zinc-100 border border-neutral-300 flex items-center justify-center shrink-0 transition-all duration-300 ${
-            isMinimized ? 'w-[18px] h-[18px]' : 'w-[30px] h-[30px]'
-          }`}>
+          <div className='rounded-full bg-zinc-100 border border-neutral-300 flex items-center justify-center shrink-0 transition-all duration-300 w-[30px] h-[30px]'>
             <User className={`text-neutral-600 shrink-0 ${
               isMinimized ? 'w-3.5 h-3.5' : 'w-4 h-4'
             }`} />
