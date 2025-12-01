@@ -16,17 +16,31 @@ import {
   Sun,
   User,
   ChevronDown,
+  X,
+  ChevronRight,
 } from 'lucide-react'
 import Image from 'next/image'
 
 interface SidebarProps {
   isOpen?: boolean
   onClose?: () => void
+  isMinimized?: boolean
+  onMinimizeChange?: (minimized: boolean) => void
 }
 
-export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
+export function Sidebar({ isOpen = true, onClose, isMinimized: externalIsMinimized, onMinimizeChange }: SidebarProps) {
   const isMobile = useMedia('(max-width: 1024px)')
   const [isProfileExpanded, setIsProfileExpanded] = useState(true)
+  const [internalMinimized, setInternalMinimized] = useState(false)
+  const isMinimized = externalIsMinimized !== undefined ? externalIsMinimized : internalMinimized
+
+  const setIsMinimized = (minimized: boolean) => {
+    if (onMinimizeChange) {
+      onMinimizeChange(minimized)
+    } else {
+      setInternalMinimized(minimized)
+    }
+  }
 
   const navItems = [
     { icon: LayoutDashboard, label: 'Quests', active: true },
@@ -35,23 +49,67 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     { icon: Gamepad2, label: 'Mini Games' },
   ]
 
+  const handleSidebarClick = () => {
+    if (isMinimized) {
+      setIsMinimized(false)
+    }
+  }
+
   const sidebarContent = (
-    <aside className="bg-zinc-100 border-r border-neutral-200 min-h-screen h-full flex flex-col justify-between p-5 sticky top-0">
-      <div className="flex flex-col gap-[54px] items-end w-full">
-        <div className="flex items-center justify-between w-full min-w-[184px] px-0 py-0.5 rounded-xl">
-          <div className="relative w-12 h-[30px] flex items-center">
+    <aside
+      className="bg-zinc-100 border-r border-neutral-200 min-h-screen h-full flex flex-col justify-between sticky top-0 transition-all duration-300 p-3"
+      onClick={handleSidebarClick}
+    >
+      <div className="flex flex-col gap-12 items-end w-full">
+        <div className={`flex items-center ${isMinimized ? 'justify-center' : 'justify-between'} w-full ${isMinimized ? '' : 'min-w-[184px]'} px-0 py-0.5 rounded-xl relative group`}>
+          {/* Logo - always visible, but hidden when expand button is hovered */}
+          <div className={`flex items-center justify-center transition-opacity duration-200 opacity-100 ${
+            isMinimized ? 'w-6 h-6 group-hover:opacity-0' : 'w-12 h-[30px]'
+          }`}>
             <Image
               src="/assets/logo.svg"
               alt="Superboard"
-              fill
+              width={isMinimized ? 24 : 48}
+              height={isMinimized ? 24 : 30}
               className="object-contain"
               priority
             />
           </div>
-          {isMobile && (
+          {!isMobile && (
+            <>
+              {/* Expand button - only visible when minimized and hovered */}
+              {isMinimized && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsMinimized(false)
+                  }}
+                  className="absolute inset-0 flex items-center justify-center p-2 hover:bg-neutral-200 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100 cursor-pointer"
+                  aria-label="Expand sidebar"
+                  title="Expand sidebar"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              )}
+              {/* Minimize button - only visible when expanded */}
+              {!isMinimized && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsMinimized(true)
+                  }}
+                  className="p-2 hover:bg-neutral-200 rounded-lg transition-colors shrink-0 cursor-pointer"
+                  aria-label="Minimize sidebar"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </>
+          )}
+          {isMobile && !isMinimized && (
             <button
               onClick={onClose}
-              className="p-2 hover:bg-neutral-200 rounded-lg transition-colors"
+              className="p-2 hover:bg-neutral-200 rounded-lg transition-colors cursor-pointer"
               aria-label="Close sidebar"
             >
               <ChevronDown className="w-6 h-6" />
@@ -59,23 +117,34 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           )}
         </div>
 
-        <div className="flex flex-col gap-[60px] items-start w-full">
-          <div className="flex flex-col gap-[56px] items-start w-full">
-            <nav className="flex flex-col gap-1 items-start w-full">
+        <div className={`flex flex-col gap-12 w-full ${isMinimized ? 'items-center' : 'items-start'}`}>
+          <div className={`flex flex-col gap-12 w-full ${isMinimized ? 'items-center' : 'items-start'}`}>
+            <nav className={`flex flex-col gap-1 w-full ${isMinimized ? 'items-center' : 'items-start'}`}>
               {navItems.map((item) => {
                 const Icon = item.icon
                 return (
                   <button
                     key={item.label}
-                    className={`w-full flex gap-2 items-center p-2 rounded-lg transition-colors ${
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (isMinimized) {
+                        setIsMinimized(false)
+                      }
+                    }}
+                    className={`${isMinimized ? 'w-10 h-10' : 'w-full'} flex items-center ${isMinimized ? 'justify-center' : 'gap-2'} p-2 rounded-lg transition-all duration-300 ${
                       item.active
                         ? 'bg-[#e7e7e9] text-zinc-950'
                         : 'text-zinc-950 hover:bg-neutral-200'
                     }`}
                     aria-current={item.active ? 'page' : undefined}
+                    title={isMinimized ? item.label : undefined}
                   >
                     <Icon className="w-5 h-5 shrink-0" />
-                    <span className="text-sm font-medium">{item.label}</span>
+                    <span className={`text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                      isMinimized ? 'w-0 opacity-0 overflow-hidden' : 'w-auto opacity-100'
+                    }`}>
+                      {item.label}
+                    </span>
                   </button>
                 )
               })}
@@ -84,42 +153,80 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2.5 items-start w-full">
-        <button className="w-full flex gap-2 items-center p-2 rounded-lg text-zinc-950 hover:bg-neutral-200 transition-colors">
+      <div className={`flex flex-col gap-2.5 w-full ${isMinimized ? 'items-center' : 'items-start'}`}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            if (isMinimized) {
+              setIsMinimized(false)
+            }
+          }}
+          className={`${isMinimized ? 'w-10 h-10' : 'w-full'} flex items-center ${isMinimized ? 'justify-center' : 'gap-2'} p-2 rounded-lg text-zinc-950 hover:bg-neutral-200 transition-all duration-300`}
+          title={isMinimized ? 'Support' : undefined}
+        >
           <HelpCircle className="w-5 h-5 shrink-0" />
-          <span className="text-sm font-medium">Support</span>
+          <span className={`text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+            isMinimized ? 'w-0 opacity-0 overflow-hidden' : 'w-auto opacity-100'
+          }`}>
+            Support
+          </span>
         </button>
-        <button className="w-full flex gap-2 items-center p-2 rounded-lg text-zinc-950 hover:bg-neutral-200 transition-colors">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            if (isMinimized) {
+              setIsMinimized(false)
+            }
+          }}
+          className={`${isMinimized ? 'w-10 h-10' : 'w-full'} flex items-center ${isMinimized ? 'justify-center' : 'gap-2'} p-2 rounded-lg text-zinc-950 hover:bg-neutral-200 transition-all duration-300`}
+          title={isMinimized ? 'Light Mode' : undefined}
+        >
           <Sun className="w-5 h-5 shrink-0" />
-          <span className="text-sm font-medium">Light Mode</span>
+          <span className={`text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+            isMinimized ? 'w-0 opacity-0 overflow-hidden' : 'w-auto opacity-100'
+          }`}>
+            Light Mode
+          </span>
         </button>
 
-        <div className="w-full flex items-center justify-center my-2">
-          <div className="w-full h-px bg-neutral-200" />
+        <div className={`w-full flex items-center justify-center my-2 ${isMinimized ? 'w-auto' : ''}`}>
+          <div className={`${isMinimized ? 'w-8' : 'w-full'} h-px bg-neutral-200`} />
         </div>
 
-        <div className="flex flex-col gap-[56px] items-start w-full">
-          <div className="flex flex-col gap-1 items-start w-full">
-            <button
-              onClick={() => setIsProfileExpanded(!isProfileExpanded)}
-              className="w-full flex gap-2.5 items-center px-2 py-2.5 rounded-md hover:bg-neutral-200 transition-colors"
-              aria-expanded={isProfileExpanded}
-            >
-              <div className="relative w-[30px] h-[30px] rounded-full bg-zinc-100 border border-neutral-300 flex items-center justify-center shrink-0">
-                <User className="w-4 h-4 text-neutral-600" />
-              </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            if (isMinimized) {
+              setIsMinimized(false)
+            } else {
+              setIsProfileExpanded(!isProfileExpanded)
+            }
+          }}
+          className={`${isMinimized ? 'w-10 h-10' : 'w-full'} flex items-center ${isMinimized ? 'justify-center' : 'gap-2.5'} p-2 rounded-lg hover:bg-neutral-200 transition-all duration-300`}
+          aria-expanded={isProfileExpanded}
+          title={isMinimized ? 'Profile' : undefined}
+        >
+          <div className={`rounded-full bg-zinc-100 border border-neutral-300 flex items-center justify-center shrink-0 transition-all duration-300 ${
+            isMinimized ? 'w-[18px] h-[18px]' : 'w-[30px] h-[30px]'
+          }`}>
+            <User className={`text-neutral-600 shrink-0 ${
+              isMinimized ? 'w-3.5 h-3.5' : 'w-4 h-4'
+            }`} />
+          </div>
+          {!isMinimized && (
+            <>
               <div className="flex-1 flex flex-col items-start">
                 <span className="text-sm font-medium text-zinc-950">Profile</span>
                 <span className="text-xs text-neutral-400 truncate">0x81D...886C7</span>
               </div>
               <ChevronUpIcon
-                className={`w-6 h-6 shrink-0 transition-transform ${
+                className={`w-6 h-6 shrink-0 transition-transform duration-300 ${
                   isProfileExpanded ? '' : 'rotate-180'
                 }`}
               />
-            </button>
-          </div>
-        </div>
+            </>
+          )}
+        </button>
       </div>
     </aside>
   )
@@ -143,6 +250,14 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     )
   }
 
-  return <div className="w-[240px] shrink-0 h-screen sticky top-0">{sidebarContent}</div>
+  return (
+    <div
+      className={`shrink-0 h-screen sticky top-0 transition-all duration-300 ${
+        isMinimized ? 'w-[80px]' : 'w-[240px]'
+      }`}
+    >
+      {sidebarContent}
+    </div>
+  )
 }
 

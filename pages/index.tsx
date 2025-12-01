@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button'
 export default function Home() {
   const isMobile = useMedia('(max-width: 1024px)')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarMinimized, setSidebarMinimized] = useState(false)
 
   return (
     <div className="min-h-screen bg-white">
@@ -36,7 +37,12 @@ export default function Home() {
 
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <Sidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          isMinimized={sidebarMinimized}
+          onMinimizeChange={setSidebarMinimized}
+        />
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0 lg:ml-0">
@@ -47,7 +53,7 @@ export default function Home() {
           <main className="flex-1 flex flex-col items-start w-full">
             {/* Hero Section - Full width from sidebar to screen edge */}
             <div className="w-full">
-              <Hero />
+              <Hero sidebarMinimized={sidebarMinimized} />
             </div>
 
             {/* Stats and Leaderboard - matching AboutSection padding */}

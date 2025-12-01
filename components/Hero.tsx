@@ -8,11 +8,19 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { mockCampaignData } from '@/lib/mockData'
 
-export function Hero() {
+interface HeroProps {
+  sidebarMinimized?: boolean
+}
+
+export function Hero({ sidebarMinimized = false }: HeroProps) {
   return (
     <section className="relative h-[398px] overflow-hidden rounded-none bg-[#4847ae] backdrop-blur-[60px] w-full">
-      {/* Background Image - exact Figma positioning */}
-      <div className="absolute left-[5%] lg:left-[24.33%] top-[20.6%] right-[5%] lg:right-[56.17%] bottom-[20.6%] rounded-[14px] overflow-hidden z-0">
+      {/* Background Image - responsive positioning: adjusts when sidebar toggles */}
+      <div className={`absolute top-[20.6%] bottom-[20.6%] rounded-[14px] overflow-hidden z-0 transition-all duration-300 ${
+        sidebarMinimized
+          ? 'left-[5%] lg:left-[calc(24.33%-160px)] right-[5%] lg:right-[calc(56.17%+160px)]'
+          : 'left-[5%] lg:left-[24.33%] right-[5%] lg:right-[56.17%]'
+      }`}>
         <Image
           src="/assets/hero-image.png"
           alt="Campaign illustration"
@@ -22,17 +30,21 @@ export function Hero() {
         />
       </div>
 
-      {/* Back Button - exact Figma positioning: inset-[9.42%_87.12%_82.29%_7%] */}
+      {/* Back Button - responsive positioning: adjusts when sidebar toggles */}
       <Button
         variant="outline"
         size="sm"
-        className="absolute top-[9.42%] left-[7%] lg:left-[84px] bg-white/10 border border-white/5 backdrop-blur-sm text-white hover:bg-white/30 hover:border-white/20 rounded-full px-3 py-2 h-auto transition-all duration-200 z-20 flex items-center gap-[3.307px]"
+        className={`absolute top-[9.42%] bg-white/10 border border-white/5 backdrop-blur-sm text-white hover:bg-white/30 hover:border-white/20 rounded-full px-3 py-2 h-auto transition-all duration-300 z-20 flex items-center gap-[5px] ${
+          sidebarMinimized
+            ? 'left-[7%] lg:left-[calc(194px-160px)]'
+            : 'left-[7%] lg:left-[94px]'
+        }`}
       >
         <div className="flex items-center justify-center relative shrink-0">
           <div className="flex-none rotate-180">
             <div className="relative w-[15.273px] h-[15.273px]">
               <Image
-                src="/assets/icon-back-arrow.svg"
+                src="/assets/icon-back-arrow-figma.svg"
                 alt=""
                 fill
                 className="object-contain"
@@ -47,13 +59,25 @@ export function Hero() {
       <Button
         variant="outline"
         size="sm"
-        className="absolute top-[9.42%] right-[4.89%] lg:right-[58px] bg-white/10 border border-white/5 backdrop-blur-sm text-white hover:bg-white/30 hover:border-white/20 rounded-full px-3 py-2 h-auto transition-all duration-200 z-20"
+        className="absolute top-[9.42%] right-[4.89%] lg:right-[58px] bg-white/10 border border-white/5 backdrop-blur-sm text-white hover:bg-white/30 hover:border-white/20 rounded-full px-3 py-2 h-auto transition-all duration-200 z-20 flex items-center gap-[5px]"
       >
         <span className="text-xs font-bold">Share</span>
+        <div className="relative shrink-0 w-[15.273px] h-[15.273px]">
+          <Image
+            src="/assets/icon-share.svg"
+            alt=""
+            fill
+            className="object-contain"
+          />
+        </div>
       </Button>
 
-      {/* Content - exact Figma positioning: left-[562.67px] top-[84px] w-[346px] */}
-      <div className="absolute left-1/2 lg:left-[662.67px] top-[84px] -translate-x-1/2 lg:translate-x-0 w-[90%] max-w-[346px] lg:w-[346px] flex flex-col gap-[21px] items-start justify-start z-10">
+      {/* Content - responsive positioning: adjusts when sidebar toggles (160px difference: 240px - 80px) */}
+      <div className={`absolute left-1/2 top-[84px] -translate-x-1/2 lg:translate-x-0 w-[90%] max-w-[346px] lg:w-[346px] flex flex-col gap-[21px] items-start justify-start z-10 transition-all duration-300 ${
+        sidebarMinimized 
+          ? 'lg:left-[calc(762.67px-160px)]' 
+          : 'lg:left-[712.67px]'
+      }`}>
         {/* Rewards Badge */}
         <div className="bg-white/10 border border-black/5 rounded-full flex items-center justify-center px-3 py-2 gap-[3.307px] shrink-0">
           <div className="relative shrink-0 w-6 h-6">
