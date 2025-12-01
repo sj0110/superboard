@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['www.figma.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.figma.com',
+      },
+    ],
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {
