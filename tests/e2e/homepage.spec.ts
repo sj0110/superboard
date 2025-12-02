@@ -13,7 +13,7 @@ test.describe('Homepage', () => {
 
   test('should have working search input', async ({ page }) => {
     await page.goto('/')
-    const searchInput = page.getByLabelText('Search Quests')
+    const searchInput = page.getByPlaceholder('Search Quests')
     await expect(searchInput).toBeVisible()
     await searchInput.fill('test quest')
     await expect(searchInput).toHaveValue('test quest')
