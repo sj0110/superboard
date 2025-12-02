@@ -12,7 +12,7 @@ import { mockCampaignData } from '@/lib/mockData'
 
 export function AboutSection() {
   return (
-    <section className="backdrop-blur-[60px] flex flex-col gap-5 items-center justify-center overflow-clip px-4 lg:px-10 py-16 w-full">
+    <section className="backdrop-blur-[60px] flex flex-col gap-5 items-center justify-center overflow-clip px-4 lg:px-10 py-8 lg:py-16 w-full">
       <Card className="bg-neutral-50 border border-neutral-100 flex flex-col gap-7 items-start pb-10 pt-2.5 px-4 lg:px-8 rounded-tl-4xl rounded-tr-4xl w-full">
         {/* Header */}
         <div className="border-b border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-0 py-5 w-full">
@@ -34,7 +34,7 @@ export function AboutSection() {
         <div className="flex flex-col lg:flex-row gap-5 items-stretch w-full">
           {/* Curator Card */}
           <div className="flex-1 flex items-center justify-center w-full lg:w-auto">
-            <Card className="flex-1 flex flex-col items-center justify-center p-7 w-full min-h-[216px]">
+            <Card className="flex-1 flex flex-col items-center justify-center p-5 lg:p-7 w-full min-h-[216px]">
               <div className="flex flex-col gap-2 items-center justify-center w-full">
                 <div className="box-border flex flex-col items-center pb-4 pt-0 px-0">
                   <div className="mb-[-16px] relative w-[100px] h-[100px]">
@@ -59,7 +59,7 @@ export function AboutSection() {
 
           {/* Timeline Card */}
           <div className="flex-1 flex flex-col min-h-[216px] items-start justify-between w-full lg:w-auto">
-            <Card className="flex-1 flex flex-col items-start justify-between p-7 w-full h-full">
+            <Card className="flex-1 flex flex-col items-start justify-between p-5 lg:p-7 w-full h-full">
               <div className="flex items-start justify-between w-full">
                 <div className="flex flex-col gap-2 items-start justify-center">
                   <h3 className="text-lg font-bold text-neutral-700">Timeline</h3>
@@ -92,12 +92,16 @@ export function AboutSection() {
           </div>
 
           {/* Tutorial Card */}
-          <div className="flex-1 flex flex-col min-h-[216px] items-start justify-between w-full lg:w-auto">
-            <Card className="flex-1 flex flex-col items-start justify-between p-7 w-full h-full">
-              <div className="flex flex-col gap-2 items-start justify-center w-full">
+          <div className="flex-1 flex flex-col w-full lg:w-auto">
+            <Card className="flex flex-col justify-between p-5 lg:p-7 w-full h-full min-h-[216px]">
+
+              {/* Top Section */}
+              <div className="flex flex-col gap-2 w-full">
                 <h3 className="text-lg font-bold text-neutral-700">How to perform this quest?</h3>
                 <p className="text-xs font-medium text-neutral-500">Watch a tutorial.</p>
               </div>
+
+              {/* Bottom Button */}
               <Button
                 variant="outline"
                 size="default"
